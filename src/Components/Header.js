@@ -4,7 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { gql } from "apollo-boost";
 import Input from "./Input";
 import useInput from "../Hooks/useInput";
-import { Compass, HeartEmpty, User, Insta } from "./Icons";
+import { Compass, HeartEmpty, User, Logo } from "./Icons";
 import { useQuery } from "react-apollo-hooks";
 
 const Header = styled.header`
@@ -20,6 +20,7 @@ const Header = styled.header`
   justify-content: center;
   align-items: center;
   padding: 25px 0px;
+  z-index: 2;
 `;
 
 const HeaderWrapper = styled.div`
@@ -62,7 +63,7 @@ const HeaderLink = styled(Link)`
   }
 `;
 
-export const ME = gql`
+const ME = gql`
   {
     me {
       username
@@ -72,8 +73,11 @@ export const ME = gql`
 
 export default withRouter(({ history }) => {
   const search = useInput("");
-  const { data } = useQuery(ME);
-  console.log(data.me);
+  // const { data: {me}, data } = useQuery(ME);
+  // console.log(me, data);
+  // const meQuery = useQuery(ME);
+  const { data, loading } = useQuery(ME);
+
   const onSearchSubmit = e => {
     e.preventDefault();
     history.push(`/search?term=${search.value}`);
@@ -83,7 +87,7 @@ export default withRouter(({ history }) => {
       <HeaderWrapper>
         <HeaderColumn>
           <Link to="/">
-            <Insta />
+            <Logo />
           </Link>
         </HeaderColumn>
         <HeaderColumn>
@@ -98,7 +102,7 @@ export default withRouter(({ history }) => {
           <HeaderLink to="/notifications">
             <HeartEmpty />
           </HeaderLink>
-          {/* {!data.me ? (
+          {/* {data === undefined || data.me === undefined ? (
             <HeaderLink to="/#">
               <User />
             </HeaderLink>
@@ -107,6 +111,15 @@ export default withRouter(({ history }) => {
               <User />
             </HeaderLink>
           )} */}
+          {!loading && !data.me ? (
+            <HeaderLink to="/#">
+              <User />
+            </HeaderLink>
+          ) : (
+            <HeaderLink to={!loading ? data.me.username : ""}>
+              <User />
+            </HeaderLink>
+          )}
         </HeaderColumn>
       </HeaderWrapper>
     </Header>

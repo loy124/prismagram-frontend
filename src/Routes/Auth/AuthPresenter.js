@@ -1,4 +1,5 @@
 import React from "react";
+import Helmet from "react-helmet";
 import styled from "styled-components";
 import Input from "../../Components/Input";
 import Button from "../../Components/Button";
@@ -60,12 +61,21 @@ export default ({
   <Wrapper>
     <Form>
       {action === "logIn" && (
+        <>
+        <Helmet>
+          <title> 로그인 | Prismagram</title>
+        </Helmet>
         <form onSubmit={onSubmit}>
           <Input placeholder={"이메일"} {...email} type="email" />
           <Button text={"로그인"} />
         </form>
+        </>
       )}
       {action === "signUp" && (
+        <>
+        <Helmet>
+          <title> 회원가입 | Prismagram</title>
+        </Helmet>
         <form onSubmit={onSubmit}>
           <Input placeholder={"성"} {...firstName} />
           <Input placeholder={"이름"} {...lastName} />
@@ -73,8 +83,13 @@ export default ({
           <Input placeholder={"유저이름"} {...username} />
           <Button text={"가입하기"} />
         </form>
+        </>
       )}
       {action === "confirm" && (
+        <>
+        <Helmet>
+          <title> 인증 번호 | Prismagram</title>
+        </Helmet>
         <form onSubmit={onSubmit}>
           <Input
             placeholder="인증 비밀번호를 입력하세요"
@@ -83,6 +98,7 @@ export default ({
           />
           <Button text={"확인하기"} />
         </form>
+        </>
       )}
     </Form>
 
