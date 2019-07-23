@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
+import { useMutation, useQuery } from "react-apollo-hooks";
+import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
+import { toast } from "react-toastify";
+import { ME } from "../SharedQueries";
 
 const PostContainer = ({
   id,
@@ -16,7 +20,83 @@ const PostContainer = ({
 }) => {
   const [isLikedState, setIsLiked] = useState(isLiked);
   const [likeCountState, setLikeCount] = useState(likeCount);
+  const [currentItem, setCurrentItem] = useState(0);
+  const [selfComments, setSelfComments] = useState([]);
   const comment = useInput("");
+  // const { data: meQuery } = useQuery(ME);
+
+  const [toggleLikeMutation] = useMutation(TOGGLE_LIKE, {
+    variables: { postId: id }
+  });
+  const [addCommentMutation] = useMutation(ADD_COMMENT, {
+    variables: { postId: id, text: comment.value }
+  });
+
+  const slidePrev = () => {
+    const totalFiles = files.length;
+    if (currentItem === 0) {
+      setCurrentItem(totalFiles - 1);
+    } else {
+      setCurrentItem(currentItem - 1);
+    }
+  };
+
+  const slideNext = () => {
+    const totalFiles = files.length;
+    if (currentItem === totalFiles - 1) {
+      setCurrentItem(0);
+    } else {
+      setCurrentItem(currentItem + 1);
+    }
+  };
+
+  // useEffect(() => {
+  //   const totalFiles = files.length;
+  //   if (currentItem === totalFiles - 1) {
+  //     setTimeout(() => setCurrentItem(0), 2000);
+  //   } else {
+  //     setTimeout(() => setCurrentItem(currentItem + 1), 2000);
+  //   }
+  // }, [currentItem, files]);
+  // console.log(currentItem, files);
+
+  const toggleLike = () => {
+    toggleLikeMutation();
+    if (isLikedState === true) {
+      setIsLiked(false);
+      setLikeCount(likeCountState - 1);
+    } else {
+      setIsLiked(true);
+      setLikeCount(likeCountState + 1);
+    }
+  };
+
+  const onKeyPress = async e => {
+    const { which } = e;
+    // e.preventDefault();
+    if (which === 13) {
+      // addCommentMutation();
+      try {
+        const {
+          data: { addComment }
+        } = await addCommentMutation();
+        setSelfComments([
+          ...selfComments,
+          // {
+            //   id: Math.floor(Math.random() * 100),
+            //   text: comment.value,
+            //   user: { username: meQuery.me.username }
+            // }
+            addComment
+          ]);
+          comment.setValue("");
+      } catch {
+        toast.error(" 댓글을 입력할 수 없습니다 다시 시도해 보세요");
+      }
+    }
+    return;
+  };
+
   return (
     <PostPresenter
       user={user}
@@ -27,9 +107,15 @@ const PostContainer = ({
       isLiked={isLikedState}
       comments={comments}
       createdAt={createdAt}
-      newcomment={comment}
+      newComment={comment}
       setIsLiked={setIsLiked}
       setLikeCount={setLikeCount}
+      currentItem={currentItem}
+      slidePrev={slidePrev}
+      slideNext={slideNext}
+      toggleLike={toggleLike}
+      onKeyPress={onKeyPress}
+      selfComments={selfComments}
     />
   );
 };

@@ -66,7 +66,7 @@ export default ({
           <title> 로그인 | Prismagram</title>
         </Helmet>
         <form onSubmit={onSubmit}>
-          <Input placeholder={"이메일"} {...email} type="email" />
+          <Input placeholder={"이메일"} value={email.value} onChange={email.onChange} type="email" />
           <Button text={"로그인"} />
         </form>
         </>
@@ -77,10 +77,10 @@ export default ({
           <title> 회원가입 | Prismagram</title>
         </Helmet>
         <form onSubmit={onSubmit}>
-          <Input placeholder={"성"} {...firstName} />
-          <Input placeholder={"이름"} {...lastName} />
-          <Input placeholder={"이메일"} {...email} type="email" />
-          <Input placeholder={"유저이름"} {...username} />
+          <Input placeholder={"성"} value={firstName.value} onChange={firstName.onChange} />
+          <Input placeholder={"이름"} value={lastName.value} onChange={lastName.onChange} />
+          <Input placeholder={"이메일"} value={email.value} onChange={email.onChange} type="email" />
+          <Input placeholder={"유저이름"} value={username.value} onChange={username.onChange} />
           <Button text={"가입하기"} />
         </form>
         </>
