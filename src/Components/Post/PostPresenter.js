@@ -126,70 +126,80 @@ export default ({
   onKeyPress,
   comments,
   selfComments
-}) => (
-  <Post>
-    <Header>
-      <Avatar size="sm" url={avatar} />
-      <UserColumn>
-        <FatText text={username} />
-        <Location>{location}</Location>
-      </UserColumn>
-    </Header>
-    <Files>
-      {files &&
-        files.map((file, index) => (
-          <File
-            key={file.id}
-            id={file.id}
-            src={file.url}
-            showing={index === currentItem}
-          />
-        ))}
-      {files && files.length > 1 && (
-        <>
-          <SlideButton type="prev" onClick={slidePrev}>
-            <Prev />
-          </SlideButton>
+}) => {
+  const year = createdAt.substring(0, 4);
+  const month = createdAt.substring(5, 7);
+  const day = createdAt.substring(8, 10);
+  const hour = parseInt(createdAt.substring(11, 13)) + 9;
+  const min = createdAt.substring(14, 16);
+  
+  return (
+    <Post>
+      <Header>
+        <Avatar size="sm" url={avatar} />
+        <UserColumn>
+          <FatText text={username} />
+          <Location>{location}</Location>
+        </UserColumn>
+      </Header>
+      <Files>
+        {files &&
+          files.map((file, index) => (
+            <File
+              key={file.id}
+              id={file.id}
+              src={file.url}
+              showing={index === currentItem}
+            />
+          ))}
+        {files && files.length > 1 && (
+          <>
+            <SlideButton type="prev" onClick={slidePrev}>
+              <Prev />
+            </SlideButton>
 
-          <SlideButton type="next" onClick={slideNext}>
-            <Next />
-          </SlideButton>
-        </>
-      )}
-    </Files>
-    <Meta>
-      <Buttons>
-        <Button onClick={toggleLike}>
-          {isLiked ? <HeartFull /> : <HeartEmpty />}
-        </Button>
-        <Button>
-          <CommentIcon />
-        </Button>
-      </Buttons>
-      <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
-      {comments && (
-        <Comments>
-          {comments.map(comment => (
-            <Comment key={comment.id}>
-              <FatText text={comment.user.username} />
-              {comment.text}
-            </Comment>
-          ))}
-          {selfComments.map(comment => (
-            <Comment key={comment.id}>
-              <FatText text={comment.user.username} />
-              {comment.text}
-            </Comment>
-          ))}
-        </Comments>
-      )}
-      <Timestamp>{createdAt}</Timestamp>
-      <Textarea
-        placeholder={"댓글달기.."}
-        value={newComment.value}
-        onChange={newComment.onChange}
-        onKeyUp={onKeyPress}
-      />
-    </Meta>
-  </Post>
-);
+            <SlideButton type="next" onClick={slideNext}>
+              <Next />
+            </SlideButton>
+          </>
+        )}
+      </Files>
+      <Meta>
+        <Buttons>
+          <Button onClick={toggleLike}>
+            {isLiked ? <HeartFull /> : <HeartEmpty />}
+          </Button>
+          <Button>
+            <CommentIcon />
+          </Button>
+        </Buttons>
+        <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+        {comments && (
+          <Comments>
+            {comments.map(comment => (
+              <Comment key={comment.id}>
+                <FatText text={comment.user.username} />
+                {comment.text}
+              </Comment>
+            ))}
+            {selfComments.map(comment => (
+              <Comment key={comment.id}>
+                <FatText text={comment.user.username} />
+                {comment.text}
+              </Comment>
+            ))}
+          </Comments>
+        )}
+        <Timestamp>
+          {year}년 {month}월 {day}일 {hour > 23 ? hour - 24 : hour}:{min}
+        </Timestamp>
+        <Textarea
+          placeholder={"댓글달기.."}
+          value={newComment.value}
+          onChange={newComment.onChange}
+          onKeyUp={onKeyPress}
+        />
+      </Meta>
+    </Post>
+  );
+};
