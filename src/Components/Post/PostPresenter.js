@@ -10,6 +10,9 @@ import {
   Prev,
   Next
 } from "../Icons";
+import { distanceInWordsStrict } from "date-fns";
+import ko from "date-fns/locale/ko";
+
 
 const Post = styled.div`
   ${props => props.theme.whiteBox};
@@ -127,12 +130,7 @@ export default ({
   comments,
   selfComments
 }) => {
-  const year = createdAt.substring(0, 4);
-  const month = createdAt.substring(5, 7);
-  const day = createdAt.substring(8, 10);
-  const hour = parseInt(createdAt.substring(11, 13)) + 9;
-  const min = createdAt.substring(14, 16);
-  
+  const now = new Date();
   return (
     <Post>
       <Header>
@@ -191,7 +189,7 @@ export default ({
           </Comments>
         )}
         <Timestamp>
-          {year}년 {month}월 {day}일 {hour > 23 ? hour - 24 : hour}:{min}
+          {distanceInWordsStrict(createdAt, now, { locale: ko })} 전
         </Timestamp>
         <Textarea
           placeholder={"댓글달기.."}
