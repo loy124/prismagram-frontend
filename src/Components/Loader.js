@@ -16,6 +16,8 @@ const Animation = keyframes`
 
 const Load = styled.div`
   animation: ${Animation} 2s linear infinite;
+  width: 100%;
+  text-align: center;
 `;
 
 export default () => (

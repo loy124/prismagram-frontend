@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import PostPresenter from "./PostPresenter";
 import useInput from "../../Hooks/useInput";
-import { useMutation, useQuery } from "react-apollo-hooks";
+import { useMutation } from "react-apollo-hooks";
 import { TOGGLE_LIKE, ADD_COMMENT } from "./PostQueries";
 import { toast } from "react-toastify";
-import { ME } from "../SharedQueries";
+// import { ME } from "../SharedQueries";
 
 const PostContainer = ({
   id,
@@ -73,9 +73,9 @@ const PostContainer = ({
 
   const onKeyPress = async e => {
     const { which } = e;
-    // e.preventDefault();
     if (which === 13) {
       // addCommentMutation();
+      e.preventDefault();
       try {
         const {
           data: { addComment }
@@ -83,13 +83,13 @@ const PostContainer = ({
         setSelfComments([
           ...selfComments,
           // {
-            //   id: Math.floor(Math.random() * 100),
-            //   text: comment.value,
-            //   user: { username: meQuery.me.username }
-            // }
-            addComment
-          ]);
-          comment.setValue("");
+          //   id: Math.floor(Math.random() * 100),
+          //   text: comment.value,
+          //   user: { username: meQuery.me.username }
+          // }
+          addComment
+        ]);
+        comment.setValue("");
       } catch {
         toast.error(" 댓글을 입력할 수 없습니다 다시 시도해 보세요");
       }

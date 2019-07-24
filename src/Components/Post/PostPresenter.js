@@ -13,7 +13,6 @@ import {
 import { distanceInWordsStrict } from "date-fns";
 import ko from "date-fns/locale/ko";
 
-
 const Post = styled.div`
   ${props => props.theme.whiteBox};
   width: 100%;
@@ -130,7 +129,7 @@ export default ({
   comments,
   selfComments
 }) => {
-  const now = new Date();
+  const today = new Date();
   return (
     <Post>
       <Header>
@@ -189,7 +188,7 @@ export default ({
           </Comments>
         )}
         <Timestamp>
-          {distanceInWordsStrict(createdAt, now, { locale: ko })} 전
+          {distanceInWordsStrict(createdAt, today, { locale: ko })} 전
         </Timestamp>
         <Textarea
           placeholder={"댓글달기.."}

@@ -7,7 +7,7 @@ export default {
   blackColor: "#262626",
   blueColor: "#3897f0",
   darkGreyColor: "#999",
-  lightGreyColor: "c7c7c7",
+  lightGreyColor: "#c7c7c7",
   redColor: "#ED4956",
   darkBlueColor: "#003569",
   boxBorder: "1px solid #e6e6e6",
