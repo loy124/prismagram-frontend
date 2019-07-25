@@ -142,10 +142,13 @@ export default ({
   return (
     <Post>
       <Header>
+        <Link to={`${username}`} >
         <Avatar size="sm" url={avatar} />
+        </Link>
         <UserColumn>
-          <Link to={`${username}`} />
+          <Link to={`${username}`} >
           <FatText text={username} />
+          </Link>
           <Location>{location}</Location>
         </UserColumn>
       </Header>

@@ -43,8 +43,8 @@ const NumberText = styled.div`
   font-size: 16px;
 `;
 
-const SquarePost = ({ likeCount, commentCount, file }) => (
-  <Container bg={file.url}>
+const SquarePost = ({className, likeCount, commentCount, file }) => (
+  <Container className={className} bg={file.url}>
     <Overlay>
       <Number>
         <HeartFull /> <NumberText>{likeCount}</NumberText>
