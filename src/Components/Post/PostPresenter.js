@@ -3,6 +3,7 @@ import styled from "styled-components";
 import TextareaAutosize from "react-autosize-textarea";
 import FatText from "../FatText";
 import Avatar from "../Avatar";
+import { Link } from "react-router-dom";
 import {
   HeartFull,
   HeartEmpty,
@@ -19,6 +20,9 @@ const Post = styled.div`
   max-width: 600px;
   margin-bottom: 25px;
   user-select: none;
+  a {
+    color: inherit;
+  }
 `;
 
 const Header = styled.header`
@@ -113,6 +117,10 @@ const Comment = styled.li`
   }
 `;
 
+const Caption = styled.div`
+  margin: 10px 0px;
+`;
+
 export default ({
   user: { username, avatar },
   location,
@@ -127,7 +135,8 @@ export default ({
   toggleLike,
   onKeyPress,
   comments,
-  selfComments
+  selfComments,
+  caption
 }) => {
   const today = new Date();
   return (
@@ -135,6 +144,7 @@ export default ({
       <Header>
         <Avatar size="sm" url={avatar} />
         <UserColumn>
+          <Link to={`${username}`} />
           <FatText text={username} />
           <Location>{location}</Location>
         </UserColumn>
@@ -171,6 +181,9 @@ export default ({
           </Button>
         </Buttons>
         <FatText text={likeCount === 1 ? "1 like" : `${likeCount} likes`} />
+        <Caption>
+          <FatText text={username} /> {caption}
+        </Caption>
         {comments && (
           <Comments>
             {comments.map(comment => (
